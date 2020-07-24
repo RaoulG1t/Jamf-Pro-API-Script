@@ -34,9 +34,8 @@ LocalKey=`printf "$JamfUser:$JamfPass" | iconv -t ISO-8859-1 | base64 -i -`
 
 #Read mytoken.txt and get variable with good argument
 OS_TOKEN=`cat mytoken.txt | grep "token" | awk '{printf $3}' | cut -c 2- | sed 's/.\{2\}$//'`
-#rm ./mytoken.txt
 
-curl -X GET "https://grandreims.jamfcloud.com/uapi/v1/inventory-preload?page=0&size=100&pagesize=100&page-size=$Nline&sort=id%3Aasc" -H "accept: application/json" -H "Authorization: Bearer $OS_TOKEN" -s --output preload.txt
+curl -X GET "https://$Server/uapi/v1/inventory-preload?page=0&size=100&pagesize=100&page-size=$Nline&sort=id%3Aasc" -H "accept: application/json" -H "Authorization: Bearer $OS_TOKEN" -s --output preload.txt
 cat preload.txt | grep -B 1 "$SerialNumber" > id.txt
 GetId=`cat id.txt | grep "id" | awk '{printf $3}' | sed 's/.\{1\}$//'`
 echo ""
